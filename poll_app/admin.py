@@ -1,0 +1,17 @@
+from django.contrib import admin
+from poll_app.models import Question, Choice
+
+
+class ChoiceInline(admin.TabularInline):
+    model = Choice
+    extra = 3
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [(None, {'fields': ['question_text']}),
+                 ('Date information', {'fields': ['created_at']}),
+                 ('Active', {'fields': ['is_active']})]
+    inlines = [ChoiceInline]
+    readonly_fields = ['created_at']
+    list_display = ['question_text', 'created_at', 'is_active']

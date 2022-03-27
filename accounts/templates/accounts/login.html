@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Authorization{% endblock %}
+
+
+{% block content %}
+<!--{{ form.non_field.errors }}-->
+<div class="container">
+    <h1>Authorization</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+</div>
+{% endblock %}

@@ -22,6 +22,10 @@ class ResultsView(generic.DetailView):
     template_name = 'poll_app/results.html'
 
 
+class AboutView(generic.TemplateView):
+    template_name = 'poll_app/about.html'
+
+
 def vote(request, pk):
     question = get_object_or_404(Question, pk=pk)
     try:

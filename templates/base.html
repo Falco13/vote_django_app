@@ -19,14 +19,15 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-link active" aria-current="page" href="{% url 'poll_app:home' %}">Home</a>
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="{% url 'poll_app:about' %}">About</a>
             </div>
         </div>
         {% if request.user.is_authenticated %}
-        Welcome, {{ user.username }}&ensp;<a class="btn btn-warning" href="" type="submit">Logout</a>
+        Welcome, {{ user.username }}
+        &ensp;<a class="btn btn-warning" href="{% url 'accounts:logout' %}" type="submit">Logout</a>
         {% else %}
         <a class="btn btn-warning" href="{% url 'accounts:login' %}" type="submit">Login</a>&ensp;
-        <a class="btn btn-danger" href="" type="submit">Register</a>
+        <a class="btn btn-danger" href="{% url 'accounts:signup' %}" type="submit">Register</a>
         {% endif %}
     </div>
 </nav>

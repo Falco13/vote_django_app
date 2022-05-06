@@ -14,4 +14,4 @@ class QuestionAdmin(admin.ModelAdmin):
                  ('Active', {'fields': ['is_active']})]
     inlines = [ChoiceInline]
     readonly_fields = ['created_at']
-    list_display = ['question_text', 'created_at', 'is_active']
+    list_display = ['id', 'question_text', 'created_at', 'is_active']

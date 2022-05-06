@@ -1,9 +1,8 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from accounts.models import AdvUser
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from accounts.forms import UserRegisterForm, MyLoginForm
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView
 
 
 class SignUpView(SuccessMessageMixin, CreateView):

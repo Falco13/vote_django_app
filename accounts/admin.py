@@ -1,8 +1,8 @@
 from django.contrib import admin
-from accounts.models import AdvUser
+from accounts.models import User
 
 
-@admin.register(AdvUser)
+@admin.register(User)
 class UsersAdmin(admin.ModelAdmin):
     list_display = ['id',
                     'username',

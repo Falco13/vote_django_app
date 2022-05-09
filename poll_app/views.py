@@ -9,7 +9,7 @@ from poll_app.models import Question, Choice
 class HomeView(generic.ListView):
     template_name = 'poll_app/home.html'
     context_object_name = 'question_list'
-    queryset = Question.objects.all()
+    queryset = Question.objects.filter(is_active=True)
 
 
 class DetailView(generic.DetailView):

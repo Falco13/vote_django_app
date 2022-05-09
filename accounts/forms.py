@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
-from accounts.models import AdvUser
+from accounts.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -18,5 +18,5 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(label='email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
     class Meta:
-        model = AdvUser
+        model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']

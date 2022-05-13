@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'poll_app.apps.PollAppConfig',
     'accounts.apps.AccountsConfig'
 ]
@@ -79,6 +80,27 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GITHUB_KEY = '-'
+SOCIAL_AUTH_GITHUB_SECRET = '-'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '-'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '-'
+SOCIAL_AUTH_GOOGLE_SCOPE = ['email']
+
+SOCIAL_AUTH_INSTAGRAM_OAUTH2_KEY = '-'  # App ID
+SOCIAL_AUTH_INSTAGRAM_OAUTH2_SECRET = '-'  # App Secret
+SOCIAL_AUTH_INSTAGRAM_SCOPE = ['email']
+SOCIAL_AUTH_INSTAGRAM_PROFILE_EXTRA_PARAMS = {'fields': 'id, email'}
+SOCIAL_AUTH_INSTAGRAM_EXTRA_DATA = [('email', 'email')]
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -119,7 +141,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
 LOGIN_REDIRECT_URL = 'poll_app:home'
 LOGOUT_REDIRECT_URL = 'poll_app:home'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True

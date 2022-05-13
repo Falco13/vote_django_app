@@ -1,7 +1,8 @@
 *.py[cod]
 __pycache__/
 
-.idea
+# IDE
 .idea/
-idea
+.vscode/
+
 .DS_Store

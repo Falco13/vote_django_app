@@ -13,6 +13,9 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib import messages
 from django.utils.http import urlsafe_base64_decode
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 class SignUpView(View):
     form_class = UserRegisterForm
@@ -37,14 +40,18 @@ class SignUpView(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject, message)
-            messages.success(request, ('Please Confirm your email to complete registration.'))
+            # user.email_user(subject, message)
+            send_mail(subject=subject,
+                      message=message,
+                      from_email=settings.EMAIL_HOST_USER,
+                      recipient_list=[form.cleaned_data['email'], ])
+            messages.success(request, 'Please Confirm your email to complete registration.')
             return redirect('accounts:login')
         return render(request, self.template_name, {'form': form})
 
 
 class ActivateAccount(View):
-    def get(self, request, uidb64, token, *args, **kwargs):
+    def get(self, request, uidb64, token, backend='django.contrib.auth.backends.ModelBackend', *args, **kwargs):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
@@ -55,11 +62,11 @@ class ActivateAccount(View):
             user.is_active = True
             user.email_confirmed = True
             user.save()
-            login(request, user)
-            messages.success(request, ('Your account have been confirmed.'))
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            messages.success(request, 'Your account have been confirmed.')
             return redirect('poll_app:home')
         else:
-            messages.warning(request, ('The confirmation link was invalid, possibly because it has already been used.'))
+            messages.warning(request, 'The confirmation link was invalid, possibly because it has already been used.')
             return redirect('poll_app:home')
 
 

@@ -6,27 +6,38 @@
 <h1 class="text-center mb-3">{{ question.question_text }}</h1>
 
 <form action="{% url 'poll_app:vote' question.pk %}" method="post">
-	{% csrf_token %}
-	{% if error_message %}
-		<p><strong>{{ error_message }}</strong></p>
-	{% endif %}
+    {% csrf_token %}
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
 
-	{% for choice in question.choice_set.all %}
-		<div class="form-check">
-			<input
-				type="radio"
-				name="choice"
-				class="form-check-input"
-				id="choice{{ forloop.counter }}"
-				value="{{ choice.pk }}"
-			/>
-			<label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label
-			>
-		</div>
-	{% endfor %}
-	<input type="submit" value="Vote" class="btn btn-danger" />
-	<a class="btn btn-dark" href="{% url 'poll_app:home' %}">Back To Polls</a>
+    {% if request.user.is_anonymous %}
+    <div class="alert alert-secondary" role="alert">
+        Please login or register to vote!
+    </div>
+    {% endif %}
+
+    {% for choice in question.choice_set.all %}
+    <div class="form-check">
+        <input
+                type="radio"
+                name="choice"
+                class="form-check-input"
+                id="choice{{ forloop.counter }}"
+                value="{{ choice.pk }}"
+        />
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+    </div>
+    {% endfor %}
+
+    {% if request.user.is_authenticated %}
+    <input type="submit" value="Vote" class="btn btn-danger"/>
+    <a class="btn btn-dark" href="{% url 'poll_app:home' %}">Back To Polls</a>
+    {% else %}
+    <input type="submit" value="Vote" class="btn btn-danger" disabled/>
+    <a class="btn btn-dark" href="{% url 'poll_app:home' %}">Back To Polls</a>
+    {% endif %}
+
 </form>
-
 
 {% endblock %}

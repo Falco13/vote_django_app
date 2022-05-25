@@ -12,4 +12,5 @@ __Used tools:__
 :heavy_check_mark: Django [web framework]   
 :heavy_check_mark: Social auth app django    
 :heavy_check_mark: HTML+CSS+Bootstrap    
-:heavy_check_mark: SQLite database     
+:heavy_check_mark: SQLite database    
+:heavy_check_mark: django-utils-six 2.0       

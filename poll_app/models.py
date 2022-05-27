@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 from accounts.models import User
 
@@ -13,6 +14,10 @@ class Question(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+    @property
+    def total_votes(self):
+        return self.choice_set.aggregate(Sum('votes'))['votes__sum']
 
 
 class Choice(models.Model):

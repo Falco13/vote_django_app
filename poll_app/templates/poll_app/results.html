@@ -6,13 +6,14 @@
 <h1 class="mb-5 text-center">{{ question.question_text }}</h1>
 
 <ul class="list-group mb-5">
-	{% for choice in question.choice_set.all %}
-	<li class="list-group-item">
-		{{ choice.choice_text }}
-		<span class="badge bg-danger float-end">{{ choice.votes }} vote{{ choice.votes | pluralize }}</span>
-	</li>
-	{% endfor %}
+    {% for choice in question.choice_set.all %}
+    <li class="list-group-item">
+        {{ choice.choice_text }}
+        <span class="badge bg-danger float-end">{{ choice.votes }} vote{{ choice.votes | pluralize }}</span>
+    </li>
+    {% endfor %}
 </ul>
+<h3 class="mb-5 text-center">Total votes: {{ question.total_votes }}</h3>
 
 <a class="btn btn-secondary" href="{% url 'poll_app:home' %}">Back To Polls</a>
 <a class="btn btn-dark" href="{% url 'poll_app:detail' question.pk %}">Vote again?</a>

@@ -26,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'poll_app.apps.PollAppConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'contact.apps.ContactConfig',
 ]
 
 MIDDLEWARE = [

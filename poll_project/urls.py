@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('poll_app.urls')),
     path('users/', include('accounts.urls')),
     path('', include('social_django.urls', namespace='social')),
+    path('', include('contact.urls')),
 ]

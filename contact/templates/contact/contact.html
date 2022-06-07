@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact{% endblock %}
+
+
+{% block content %}
+
+{{ form.non_field.errors }}
+<div class="container">
+    <h1>Contact</h1>
+    {% if request.user.is_authenticated %}
+    <div class="col-md-9">
+        <div class="alert alert-primary" role="alert">{{ user }} | {{ user.email }}</div>
+        <form action="{% url 'contact:contact' %}" method="post" class="order-form">
+            {{ form.text }}<br>
+            {% csrf_token %}
+            <p><input type="submit" class="btn btn-success" value="Send message"></p>
+        </form>
+    </div>
+    {% else %}
+    <div class="col-md-9">
+        <form action="{% url 'contact:contact' %}" method="post" class="order-form">
+            {{ form.first_name }}<br>
+            {{ form.email }}<br>
+            {{ form.text }}<br>
+            {% csrf_token %}
+            <p><input type="submit" class="btn btn-success" value="Send message"></p>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

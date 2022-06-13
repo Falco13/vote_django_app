@@ -25,6 +25,7 @@
         </div>
         {% if request.user.is_authenticated %}
         Welcome, {{ user.username }}
+        &ensp;<a class="btn btn-success" href="{% url 'accounts:profile' %}" type="submit">Profile: {{ user.username }}</a>
         &ensp;<a class="btn btn-warning" href="{% url 'accounts:logout' %}" type="submit">Logout</a>
         {% else %}
         <a class="btn btn-warning" href="{% url 'accounts:login' %}" type="submit">Login</a>&ensp;
@@ -46,7 +47,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6 m-auto">
+        <div class="col-md-7 m-auto">
             {% block content %}
             {% endblock %}
         </div>

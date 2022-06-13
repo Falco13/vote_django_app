@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block content %}
+<!--{{ form.non_field.errors }}-->
+
+<h1>Profile:</h1>
+<div class="alert alert-primary" role="alert">Your profile: <b>{{ user.username }}</b></div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">email</th>
+        <th scope="col">Date of registration</th>
+        <th scope="col">Last login</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.date_joined }}</td>
+        <td>{{ user.last_login }}</td>
+    </tr>
+    </tbody>
+</table>
+
+{% endblock %}

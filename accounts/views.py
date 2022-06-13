@@ -1,5 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from accounts.forms import UserRegisterForm, MyLoginForm
@@ -78,3 +79,8 @@ class MyLoginView(LoginView):
 
 class MyLogoutView(LoginRequiredMixin, LogoutView):
     next_page = None
+
+
+@login_required
+def profile(request):
+    return render(request, 'accounts/profile.html')

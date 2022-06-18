@@ -8,7 +8,7 @@
 </h1>
 
 {% if question_list %}
-    {% for question in question_list%}
+    {% for question in question_list %}
     <div class="card mb-3">
         <div class="card-body">
             <p class="lead">
@@ -18,6 +18,8 @@
             </p>
         </div>
     </div>
+    {% empty %}
+        There are no active polls.
     {% endfor %}
 {% else %}
     <p>No pulls</p>

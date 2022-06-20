@@ -4,19 +4,24 @@
 
 
 {% block content %}
-<!--{{ form.non_field.errors }}-->
+
 <div class="container">
-    <h1>Authorization</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block">Login</button>
-    </form>
-    <br>
-    <div class="btn-group btn-group-sm" role="group">
-        <a class="btn btn-dark btn-block" target="_blank" href="{% url 'social:begin' 'github' %}">GitHub</a>
-        <a class="btn btn-danger btn-block" target="_blank" href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
-        <a class="btn btn-info btn-block" target="_blank" href="{% url 'social:begin' 'instagram' %}">Instagram</a>
+    <div class="col-md-5 m-auto">
+        <h1>Authorization</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success btn-block">Login</button>
+        </form>
+
+
+        <br>
+        <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-dark btn-block" target="_blank" href="{% url 'social:begin' 'github' %}">GitHub</a>
+            <a class="btn btn-danger btn-block" target="_blank"
+               href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+            <a class="btn btn-info btn-block" target="_blank" href="{% url 'social:begin' 'instagram' %}">Instagram</a>
+        </div>
     </div>
 </div>
 {% endblock %}

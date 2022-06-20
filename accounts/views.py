@@ -2,17 +2,19 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from accounts.forms import UserRegisterForm, MyLoginForm
+from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from accounts.forms import UserRegisterForm, MyLoginForm, EditUserInfoForm
 from accounts.tokens import account_activation_token
 from accounts.models import User
-
 from django.views.generic import View
+from django.views.generic.edit import UpdateView
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.http import urlsafe_base64_decode
 
 from django.core.mail import send_mail
@@ -84,3 +86,20 @@ class MyLogoutView(LoginRequiredMixin, LogoutView):
 @login_required
 def profile(request):
     return render(request, 'accounts/profile.html')
+
+
+class EditUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'accounts/edit_user_info.html'
+    form_class = EditUserInfoForm
+    success_url = reverse_lazy('accounts:profile')
+    success_message = 'User information changed'
+
+    def setup(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().setup(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)

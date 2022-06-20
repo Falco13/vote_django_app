@@ -4,7 +4,6 @@
 
 
 {% block content %}
-<!--{{ form.non_field.errors }}-->
 
 <h1>Profile:</h1>
 <div class="alert alert-primary" role="alert">Your profile: <b>{{ user.username }}</b></div>
@@ -29,5 +28,7 @@
     </tr>
     </tbody>
 </table>
+
+<a href="{% url 'accounts:edit_user' %}" class="btn btn-primary btn-sm">Edit Profile</a>
 
 {% endblock %}

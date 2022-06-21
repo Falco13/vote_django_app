@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Profile{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1>Delete Profile</h1>
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want to delete your <b>[{{ user }}]</b> Profile?
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-block">Delete Profile</button>
+    </form>
+    <br>
+    <a class="btn btn-success" href="{% url 'accounts:profile' %}" type="submit">Cancel</a>
+
+</div>
+{% endblock %}

@@ -1,14 +1,14 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.forms import UserRegisterForm, MyLoginForm, EditUserInfoForm
 from accounts.tokens import account_activation_token
 from accounts.models import User
 from django.views.generic import View
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
@@ -98,6 +98,26 @@ class EditUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     def setup(self, request, *args, **kwargs):
         self.user_id = request.user.pk
         return super().setup(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
+
+
+class DeleteUserView(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'accounts/delete_user.html'
+    success_url = reverse_lazy('poll_app:home')
+
+    def setup(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().setup(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        messages.add_message(request, messages.SUCCESS, 'User deleted')
+        return super().post(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         if not queryset:

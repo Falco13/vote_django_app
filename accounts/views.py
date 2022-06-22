@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
@@ -123,3 +123,9 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
         if not queryset:
             queryset = self.get_queryset()
         return get_object_or_404(queryset, pk=self.user_id)
+
+
+class UserPasswordChangeView(SuccessMessageMixin, LoginRequiredMixin, PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    success_url = reverse_lazy('accounts:profile')
+    success_message = 'Your password has been changed successfully'

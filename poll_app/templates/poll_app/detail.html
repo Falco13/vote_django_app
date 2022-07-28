@@ -5,7 +5,7 @@
 {% block content %}
 <h1 class="text-center mb-3">{{ question.question_text }}</h1>
 
-<form action="{% url 'poll_app:vote' question.pk %}" method="post">
+<form action="{% url 'poll_app:vote' question.slug %}" method="post">
     {% csrf_token %}
     {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>

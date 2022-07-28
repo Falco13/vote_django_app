@@ -27,15 +27,15 @@ class AboutView(generic.TemplateView):
     template_name = 'poll_app/about.html'
 
 
-def vote(request, pk):
-    question = get_object_or_404(Question, pk=pk)
+def vote(request, slug):
+    question = get_object_or_404(Question, slug=slug)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
     if Vote.objects.filter(voter=request.user, question=question).exists():
         messages.error(request, "Already Voted on this choice")
-        return HttpResponseRedirect(reverse('poll_app:results', args=(pk,)))
+        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
     else:
         selected_choice.votes += 1
         selected_choice.save()
         Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
         messages.success(request, "Thanks for your vote!")
-        return HttpResponseRedirect(reverse('poll_app:results', args=(pk,)))
+        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))

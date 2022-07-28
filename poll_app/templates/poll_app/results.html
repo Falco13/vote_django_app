@@ -16,5 +16,5 @@
 <p>Total votes: <b>{{ question.total_votes }}</b></p>
 
 <a class="btn btn-secondary" href="{% url 'poll_app:home' %}">Back To Polls</a>
-<a class="btn btn-dark" href="{% url 'poll_app:detail' question.pk %}">Vote again?</a>
+<a class="btn btn-dark" href="{% url 'poll_app:detail' question.slug %}">Vote again?</a>
 {% endblock %}

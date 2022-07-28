@@ -13,8 +13,8 @@
         <div class="card-body">
             <p class="lead">
                 {{ question.question_text }}
-                <a href="{% url 'poll_app:detail' question.pk %}" class="btn btn-primary btn-sm">Vote</a>
-                <a href="{% url 'poll_app:results' question.pk %}" class="btn btn-secondary btn-sm">Results</a>
+                <a href="{% url 'poll_app:detail' question.slug %}" class="btn btn-primary btn-sm">Vote</a>
+                <a href="{% url 'poll_app:results' question.slug %}" class="btn btn-secondary btn-sm">Results</a>
             </p>
         </div>
     </div>

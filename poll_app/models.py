@@ -37,3 +37,19 @@ class Vote(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    question_relation = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='comments')
+    comment_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+
+def __str__(self):
+    return self.comment_text
+
+
+class Meta:
+    ordering = ['-created_at']

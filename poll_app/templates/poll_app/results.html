@@ -17,4 +17,36 @@
 
 <a class="btn btn-secondary" href="{% url 'poll_app:home' %}">Back To Polls</a>
 <a class="btn btn-dark" href="{% url 'poll_app:detail' question.slug %}">Vote again?</a>
+
+<div class="card my-4">
+    <h5 class="card-header">Add your comment:</h5>
+    {% if user.is_authenticated %}
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.comment_text }}
+            </div>
+            <button type="submit" class="btn btn-success">Add comment</button>
+        </form>
+    </div>
+    {% else %}
+    <h6 class="card-header"><a href="{% url 'accounts:login' %}">Login</a> or <a href="{% url 'accounts:signup' %}">SignUp</a>
+        for to add comments</h6>
+    {% endif %}
+</div>
+
+<div class="p-3 mb-2 bg-light text-dark">
+    <p>Total comments: <b>({{ question.comments.all.count }})</b></p>
+</div>
+
+{% for comment in question.comments.all %}
+<div class="media mb-4">
+    <div class="media-body">
+        <h5 class="mt-0">{{ comment.author }}</h5>
+        {{ comment.comment_text }}
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}

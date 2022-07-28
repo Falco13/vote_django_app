@@ -1,5 +1,5 @@
 from django.contrib import admin
-from poll_app.models import Question, Choice, Vote
+from poll_app.models import Question, Choice, Vote, Comment
 
 
 class ChoiceInline(admin.TabularInline):
@@ -21,3 +21,8 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
     list_display = ['question', 'choice', 'voter', 'created_at']
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['author', 'question_relation', 'comment_text', 'created_at', 'is_active']

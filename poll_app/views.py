@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
-
+from poll_app.forms import CommentForm
 from poll_app.models import Question, Vote
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 class HomeView(generic.ListView):
@@ -18,9 +19,26 @@ class DetailView(generic.DetailView):
     template_name = 'poll_app/detail.html'
 
 
-class ResultsView(generic.DetailView):
+class ResultsView(SuccessMessageMixin, generic.DetailView, generic.edit.FormMixin):
     model = Question
     template_name = 'poll_app/results.html'
+    form_class = CommentForm
+    success_url = reverse_lazy('poll_app:home')
+    success_message = 'Thank you for your comment!'
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.question_relation = self.get_object()
+        self.object.author = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class AboutView(generic.TemplateView):

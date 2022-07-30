@@ -35,6 +35,7 @@ class ResultsView(SuccessMessageMixin, generic.DetailView, generic.edit.FormMixi
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
+        self.object = self.get_object()
         if form.is_valid():
             return self.form_valid(form)
         else:

@@ -23,6 +23,12 @@
     {% if user.is_authenticated %}
     <div class="card-body">
         <form method="post">
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                {{ form.errors }}
+            </div>
+            {% endif %}
+
             {% csrf_token %}
             <div class="form-group">
                 {{ form.comment_text }}

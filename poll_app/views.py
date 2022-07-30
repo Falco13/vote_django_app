@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from poll_app.forms import CommentForm
-from poll_app.models import Question, Vote
+from poll_app.models import Question, Vote, Comment
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -23,8 +23,15 @@ class ResultsView(SuccessMessageMixin, generic.DetailView, generic.edit.FormMixi
     model = Question
     template_name = 'poll_app/results.html'
     form_class = CommentForm
-    success_url = reverse_lazy('poll_app:home')
     success_message = 'Thank you for your comment!'
+
+    def get_success_url(self):
+        return reverse('poll_app:results', kwargs={'slug': self.object.question_relation.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comm'] = Comment.objects.filter(is_active=True)
+        return context
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()

@@ -12,7 +12,7 @@ def contact_view(request):
                 Contact.objects.create(name_user=request.user,
                                        first_name=request.user.first_name,
                                        email=request.user.email,
-                                       text=form.cleaned_data)
+                                       text=form.cleaned_data.get('text'))
             else:
                 messages.error(request, form.errors)
                 return redirect('poll_app:home')

@@ -43,10 +43,10 @@
 </div>
 
 <div class="p-3 mb-2 bg-light text-dark">
-    <p>Total comments: <b>({{ question.comments.all.count }})</b></p>
+    <p>Total comments: <b>({{ comm.count }})</b></p>
 </div>
 
-{% for comment in question.comments.all %}
+{% for comment in comm %}
 <div class="media mb-4">
     <div class="media-body">
         <h5 class="mt-0">{{ comment.author }}</h5>

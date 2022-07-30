@@ -19,7 +19,7 @@ class DetailView(generic.DetailView):
     template_name = 'poll_app/detail.html'
 
 
-class ResultsView(SuccessMessageMixin, generic.DetailView, generic.edit.FormMixin):
+class ResultsView(SuccessMessageMixin, generic.edit.FormMixin, generic.DetailView):
     model = Question
     template_name = 'poll_app/results.html'
     form_class = CommentForm
@@ -29,9 +29,7 @@ class ResultsView(SuccessMessageMixin, generic.DetailView, generic.edit.FormMixi
         return reverse('poll_app:results', kwargs={'slug': self.object.question_relation.slug})
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['comm'] = Comment.objects.filter(is_active=True)
-        return context
+        return super().get_context_data(**kwargs, comm=self.object.comments.filter(is_active=True))
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()

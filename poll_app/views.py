@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views import generic
 from poll_app.forms import CommentForm
-from poll_app.models import Question, Vote, Comment
+from poll_app.models import Question, Vote
 from django.contrib.messages.views import SuccessMessageMixin
 
 

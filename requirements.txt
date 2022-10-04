@@ -9,7 +9,7 @@ defusedxml==0.7.1
 Django==4.1
 django-utils-six==2.0
 idna==3.3
-oauthlib==3.2.0
+oauthlib==3.2.1
 pycodestyle==2.8.0
 pycparser==2.21
 PyJWT==2.4.0

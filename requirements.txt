@@ -6,7 +6,7 @@ cffi==1.15.0
 charset-normalizer==2.0.12
 cryptography==37.0.2
 defusedxml==0.7.1
-Django==4.1
+django>=4.1.2
 django-utils-six==2.0
 idna==3.3
 oauthlib==3.2.1

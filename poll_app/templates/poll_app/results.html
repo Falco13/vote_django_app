@@ -13,7 +13,8 @@
     </li>
     {% endfor %}
 </ul>
-<p>Total votes: <b>{{ question.total_votes }}</b></p>
+Total votes: <b>{{ question.total_votes }}</b> | Total views: <b>{{ question.total_views }}</b>
+<p></p>
 
 <a class="btn btn-secondary" href="{% url 'poll_app:home' %}">Back To Polls</a>
 <a class="btn btn-dark" href="{% url 'poll_app:detail' question.slug %}">Vote again?</a>

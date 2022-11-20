@@ -1,5 +1,5 @@
 from django.contrib import admin
-from poll_app.models import Question, Choice, Vote, Comment
+from poll_app.models import Question, Choice, Vote, Comment, IpModel
 
 
 class ChoiceInline(admin.TabularInline):
@@ -26,3 +26,8 @@ class VoteAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['author', 'question_relation', 'comment_text', 'created_at', 'is_active']
+
+
+@admin.register(IpModel)
+class IpAdmin(admin.ModelAdmin):
+    list_display = ['id', 'ip']

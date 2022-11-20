@@ -4,8 +4,17 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from poll_app.forms import CommentForm
-from poll_app.models import Question, Vote
+from poll_app.models import Question, Vote, IpModel
 from django.contrib.messages.views import SuccessMessageMixin
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 
 class HomeView(generic.ListView):
@@ -24,6 +33,19 @@ class ResultsView(SuccessMessageMixin, generic.edit.FormMixin, generic.DetailVie
     template_name = 'poll_app/results.html'
     form_class = CommentForm
     success_message = 'Thank you for your comment!'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+
+        ip = get_client_ip(self.request)
+
+        if IpModel.objects.filter(ip=ip).exists():
+            self.object.views.add(IpModel.objects.get(ip=ip))
+        else:
+            IpModel.objects.create(ip=ip)
+            self.object.views.add(IpModel.objects.get(ip=ip))
+        return self.render_to_response(context)
 
     def get_success_url(self):
         return reverse('poll_app:results', kwargs={'slug': self.object.question_relation.slug})

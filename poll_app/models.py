@@ -3,14 +3,25 @@ from django.db.models import Sum
 from accounts.models import User
 
 
+class IpModel(models.Model):
+    ip = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.ip
+
+
 class Question(models.Model):
     question_text = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    views = models.ManyToManyField(IpModel, related_name='post_views', blank=True)
 
     def __str__(self):
         return self.question_text
+
+    def total_views(self):
+        return self.views.count()
 
     class Meta:
         ordering = ['-created_at']

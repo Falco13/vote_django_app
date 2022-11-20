@@ -7,6 +7,7 @@
 - Also implements login through social networks such as GitHub, Google and Instagram.
 - Only registered users who have confirmed their email and users logged in through social networks can vote.
 - Each user can only vote once per poll.
+- Implemented counter unique number of views by IP address.
 - Implemented a Contact form for feedback. If the User is authorized - one window is available to him - for the Message Text, his username and his email are taken from the request. If the user is anonymous, he needs to enter the required fields - Name, Email and Message Text.
 
 

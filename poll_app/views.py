@@ -1,6 +1,6 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from poll_app.forms import CommentForm
@@ -23,9 +23,13 @@ class HomeView(generic.ListView):
     queryset = Question.objects.filter(is_active=True)
 
 
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'poll_app/detail.html'
+def detail_question(request, slug):
+    question = get_object_or_404(Question, slug=slug)
+    if Vote.objects.filter(voter=request.user, question=question).exists():
+        messages.error(request, "Already Voted on this choice")
+        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+    else:
+        return render(request, 'poll_app/detail.html', context={'question': question})
 
 
 class ResultsView(SuccessMessageMixin, generic.edit.FormMixin, generic.DetailView):
@@ -76,10 +80,6 @@ class AboutView(generic.TemplateView):
 def vote(request, slug):
     question = get_object_or_404(Question, slug=slug)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    if Vote.objects.filter(voter=request.user, question=question).exists():
-        messages.error(request, "Already Voted on this choice")
-        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
-    else:
-        Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
-        messages.success(request, "Thanks for your vote!")
-        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+    Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
+    messages.success(request, "Thanks for your vote!")
+    return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))

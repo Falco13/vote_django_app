@@ -80,8 +80,6 @@ def vote(request, slug):
         messages.error(request, "Already Voted on this choice")
         return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
         Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
         messages.success(request, "Thanks for your vote!")
         return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))

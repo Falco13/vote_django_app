@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Sum
 from accounts.models import User
 
 
@@ -28,16 +27,19 @@ class Question(models.Model):
 
     @property
     def total_votes(self):
-        return self.choice_set.aggregate(Sum('votes'))['votes__sum']
+        return Vote.objects.filter(question=self.pk).count()
 
 
 class Choice(models.Model):
     choice_text = models.CharField(max_length=100)
-    votes = models.IntegerField(default=0)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.choice_text
+
+    @property
+    def get_vote_count(self):
+        return Vote.objects.filter(choice=self.pk).count()
 
 
 class Vote(models.Model):
@@ -57,10 +59,8 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.comment_text
 
-def __str__(self):
-    return self.comment_text
-
-
-class Meta:
-    ordering = ['-created_at']
+    class Meta:
+        ordering = ['-created_at']

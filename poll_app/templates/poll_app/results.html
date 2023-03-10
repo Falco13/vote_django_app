@@ -19,7 +19,7 @@ Total votes: <b>{{ question.total_votes }}</b> | Total views: <b>{{ question.tot
 <a class="btn btn-secondary" href="{% url 'poll_app:home' %}">Back To Polls</a>
 <a class="btn btn-dark" href="{% url 'poll_app:detail' question.slug %}">Vote again?</a>
 
-<div class="card my-4">
+<div class="card text-dark bg-warning my-4">
     <h5 class="card-header">Add your comment:</h5>
     {% if user.is_authenticated %}
     <div class="card-body">
@@ -34,6 +34,7 @@ Total votes: <b>{{ question.total_votes }}</b> | Total views: <b>{{ question.tot
             <div class="form-group">
                 {{ form.comment_text }}
             </div>
+            <br>
             <button type="submit" class="btn btn-success">Add comment</button>
         </form>
     </div>
@@ -43,7 +44,7 @@ Total votes: <b>{{ question.total_votes }}</b> | Total views: <b>{{ question.tot
     {% endif %}
 </div>
 
-<div class="p-3 mb-2 bg-light text-dark">
+<div class="p-3 mb-2 bg-warning text-dark">
     <p>Total comments: <b>({{ comm.count }})</b></p>
 </div>
 

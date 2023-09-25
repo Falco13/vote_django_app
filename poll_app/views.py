@@ -57,8 +57,18 @@ class ResultsView(SuccessMessageMixin, generic.edit.FormMixin, generic.DetailVie
     def get_success_url(self):
         return reverse('poll_app:results', kwargs={'slug': self.object.question_relation.slug})
 
+    # def get_context_data(self, **kwargs):
+    #     return super().get_context_data(**kwargs, comm=self.object.comments.filter(is_active=True))
+
     def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs, comm=self.object.comments.filter(is_active=True))
+        context = super().get_context_data(**kwargs)
+        user_voted_choices = []
+
+        if self.request.user.is_authenticated:
+            user_voted_choices = self.object.choice_set.filter(vote__voter=self.request.user)
+        context['user_voted_choices'] = user_voted_choices
+        context['comm'] = self.object.comments.filter(is_active=True)
+        return context
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()

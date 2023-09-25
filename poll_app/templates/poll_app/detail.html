@@ -29,7 +29,7 @@
         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
     </div>
     {% endfor %}
-
+<hr>
     {% if request.user.is_authenticated %}
     <input type="submit" value="Vote" class="btn btn-danger"/>
     <a class="btn btn-dark" href="{% url 'poll_app:home' %}">Back To Polls</a>

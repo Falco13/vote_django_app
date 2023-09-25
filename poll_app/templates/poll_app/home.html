@@ -8,21 +8,21 @@
 </h1>
 
 {% if question_list %}
-    {% for question in question_list %}
-    <div class="card mb-3">
-        <div class="card-body">
-            <p class="lead">
-                {{ question.question_text }}
-                <a href="{% url 'poll_app:detail' question.slug %}" class="btn btn-primary btn-sm">Vote</a>
-                <a href="{% url 'poll_app:results' question.slug %}" class="btn btn-secondary btn-sm">Results</a>
-            </p>
+{% for question in question_list %}
+<div class="card mb-3">
+    <div class="card-body">
+        {{ question.question_text }}
+        <div class="btn-group float-end" role="group" aria-label="Basic mixed styles example">
+            <a type="button" class="btn btn-danger" href="{% url 'poll_app:detail' question.slug %}">Vote</a>
+            <a type="button" class="btn btn-success" href="{% url 'poll_app:results' question.slug %}">Results</a>
         </div>
     </div>
-    {% empty %}
-        There are no active polls.
-    {% endfor %}
+</div>
+{% empty %}
+There are no active polls.
+{% endfor %}
 {% else %}
-    <p>No pulls</p>
+<p>No pulls</p>
 {% endif %}
 
 {% endblock %}

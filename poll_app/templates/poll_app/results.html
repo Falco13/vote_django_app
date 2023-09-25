@@ -5,20 +5,28 @@
 {% block content %}
 <h1 class="mb-5 text-center">{{ question.question_text }}</h1>
 
-<ul class="list-group mb-5">
-    {% for choice in question.choice_set.all %}
-    <li class="list-group-item">
-        {{ choice.choice_text }}
-        <span class="badge bg-danger float-end">{{ choice.get_vote_count }} vote{{ choice.votes | pluralize }}</span>
-    </li>
-    {% endfor %}
-</ul>
+
+{% for choice in question.choice_set.all %}
+{{ choice.choice_text }} <span class="badge bg-danger float-end">{{ choice.get_vote_count }} vote{{ choice.votes|pluralize }}</span>
+<div class="progress">
+    <div class="progress-bar bg-danger"
+         role="progressbar"
+         aria-label="Example with label"
+         style="width: {{ choice.percentage_vote|floatformat:1 }}%;"
+         aria-valuenow="25"
+         aria-valuemin="0"
+         aria-valuemax="100">{{ choice.percentage_vote|floatformat:1 }}%
+    </div>
+</div>
+{% endfor %}
+<hr>
 Total votes: <b>{{ question.total_votes }}</b> | Total views: <b>{{ question.total_views }}</b>
+
 <p></p>
 
 <a class="btn btn-secondary" href="{% url 'poll_app:home' %}">Back To Polls</a>
 <a class="btn btn-dark" href="{% url 'poll_app:detail' question.slug %}">Vote again?</a>
-
+<hr>
 <div class="card text-dark bg-warning my-4">
     <h5 class="card-header">Add your comment:</h5>
     {% if user.is_authenticated %}

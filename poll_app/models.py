@@ -41,6 +41,16 @@ class Choice(models.Model):
     def get_vote_count(self):
         return Vote.objects.filter(choice=self.pk).count()
 
+    @property
+    def percentage_vote(self):
+        total_votes = Vote.objects.filter(question=self.question).count()
+        vote_count = Vote.objects.filter(choice=self).count()
+        if total_votes == 0:
+            vote_in_percentage = 0
+        else:
+            vote_in_percentage = (vote_count / total_votes) * 100
+        return vote_in_percentage
+
 
 class Vote(models.Model):
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)

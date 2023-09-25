@@ -25,11 +25,14 @@ class HomeView(generic.ListView):
 
 def detail_question(request, slug):
     question = get_object_or_404(Question, slug=slug)
-    if Vote.objects.filter(voter=request.user, question=question).exists():
-        messages.error(request, "Already Voted on this choice")
-        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+    if request.user.is_authenticated:
+        if Vote.objects.filter(voter=request.user, question=question).exists():
+            messages.error(request, "Already Voted on this choice")
+            return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+        else:
+            return render(request, 'poll_app/detail.html', context={'question': question})
     else:
-        return render(request, 'poll_app/detail.html', context={'question': question})
+        return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
 
 
 class ResultsView(SuccessMessageMixin, generic.edit.FormMixin, generic.DetailView):

@@ -58,8 +58,8 @@ Total votes: <b>{{ question.total_votes }}</b> | Total views: <b>{{ question.tot
     {% endif %}
 </div>
 
-<div class="p-3 mb-2 bg-warning text-dark">
-    <p>Total comments: <b>({{ comm.count }})</b></p>
+<div class="alert alert-warning" role="alert">
+    Total comments: <span class="badge bg-secondary">{{ comm.count }}</span>
 </div>
 
 {% for comment in comm %}

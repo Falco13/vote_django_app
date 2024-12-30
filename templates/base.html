@@ -26,7 +26,10 @@
         {% if request.user.is_authenticated %}
         Welcome, {{ user.username }}
         &ensp;<a class="btn btn-success" href="{% url 'accounts:profile' %}" type="submit">Profile: {{ user.username }}</a>
-        &ensp;<a class="btn btn-warning" href="{% url 'accounts:logout' %}" type="submit">Logout</a>
+        &ensp;<form method="post" action="{% url 'accounts:logout' %} ">
+            {% csrf_token %}
+        <button class="btn btn-warning btn-block" type="submit">Logout</button>
+        </form>
         {% else %}
         <a class="btn btn-warning" href="{% url 'accounts:login' %}" type="submit">Login</a>&ensp;
         <a class="btn btn-danger" href="{% url 'accounts:signup' %}" type="submit">Sign Up</a>

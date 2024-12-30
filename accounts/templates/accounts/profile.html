@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<h1>Profile:</h1>
+<h1 class="text-center">Profile:</h1>
 <div class="alert alert-primary" role="alert">Your profile: <b>{{ user.username }}</b></div>
 
 <table class="table">
@@ -32,5 +32,30 @@
 <a href="{% url 'accounts:edit_user' %}" class="btn btn-primary btn-sm">Edit Profile</a>
 <a href="{% url 'accounts:delete_user' %}" class="btn btn-danger btn-sm">Delete Profile</a>
 <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary btn-sm">Password change</a>
+
+<h1 class="text-center">Your votes in the Polls:</h1>
+{% if votes %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Question</th>
+        <th scope="col">Your Vote</th>
+        <th scope="col">Date of Vote</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for vote in votes %}
+    <tr>
+        <td>{{ vote.question.question_text }}</td>
+        <td>{{ vote.choice.choice_text }}</td>
+        <td>{{ vote.created_at }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<p>Вы еще не голосовали.</p>
+{% endif %}
 
 {% endblock %}

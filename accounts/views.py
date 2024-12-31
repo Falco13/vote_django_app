@@ -18,7 +18,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.http import urlsafe_base64_decode
 from django.core.mail import send_mail
 from django.conf import settings
-from poll_app.models import Vote
+from poll_app.models import Vote, Question
 
 
 class SignUpView(View):
@@ -86,7 +86,9 @@ class MyLogoutView(LoginRequiredMixin, LogoutView):
 @login_required
 def profile(request):
     votes = Vote.objects.filter(voter=request.user).order_by('-created_at')
-    return render(request, 'accounts/profile.html', {'votes': votes})
+    polls_without_vote = Question.objects.exclude(id__in=Vote.objects.filter(voter=request.user).values('question'))
+    return render(request, 'accounts/profile.html', {'votes': votes,
+                                                     'polls_without_vote': polls_without_vote, })
 
 
 class EditUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):

@@ -33,6 +33,17 @@
 <a href="{% url 'accounts:delete_user' %}" class="btn btn-danger btn-sm">Delete Profile</a>
 <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary btn-sm">Password change</a>
 
+<h1 class="text-center">Polls you didn't vote for</h1>
+<ul>
+    {% for poll in polls_without_vote %}
+    <div class="alert alert-danger" role="alert">
+        {{ poll.question_text }} - <a type="button" class="btn btn-danger" href="{% url 'poll_app:detail' poll.slug %}">Vote</a>
+    </div>
+    {% empty %}
+    <h3>You've voted on all available polls!</h3>
+    {% endfor %}
+</ul>
+
 <h1 class="text-center">Your votes in the Polls:</h1>
 {% if votes %}
 <table class="table">
@@ -40,7 +51,7 @@
     <tr>
         <th scope="col">Question</th>
         <th scope="col">Your Vote</th>
-        <th scope="col">Date of Vote</th>
+        <th scope="col">Date of your Vote</th>
     </tr>
     </thead>
     <tbody>

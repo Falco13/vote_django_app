@@ -6,6 +6,7 @@ from django.views import generic
 from poll_app.forms import CommentForm
 from poll_app.models import Question, Vote, IpModel
 from django.contrib.messages.views import SuccessMessageMixin
+from poll_app.utils import can_change_vote
 
 
 def get_client_ip(request):
@@ -28,7 +29,7 @@ def detail_question(request, slug):
     if request.user.is_authenticated:
         if Vote.objects.filter(voter=request.user, question=question).exists():
             messages.error(request, "Already Voted on this choice")
-            return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+            return render(request, 'poll_app/detail.html', context={'question': question})
         else:
             return render(request, 'poll_app/detail.html', context={'question': question})
     else:
@@ -90,9 +91,21 @@ class AboutView(generic.TemplateView):
     template_name = 'poll_app/about.html'
 
 
+# def vote(request, slug):
+#     question = get_object_or_404(Question, slug=slug)
+#     selected_choice = question.choice_set.get(pk=request.POST['choice'])
+#     Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
+#     messages.success(request, "Thanks for your vote!")
+#     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+
+@can_change_vote
 def vote(request, slug):
     question = get_object_or_404(Question, slug=slug)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    existing_vote = Vote.objects.filter(voter=request.user, question=question)
+    if existing_vote.exists():
+        existing_vote.delete()
+        messages.info(request, "Your previous vote has been updated!")
     Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
     messages.success(request, "Thanks for your vote!")
     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))

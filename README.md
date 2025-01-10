@@ -5,7 +5,7 @@
 - Implemented the ability for each user to view their Profile information and Edit the user Profile. Also, it is possible for the user to Delete his Profile.
 - Each User has the opportunity to change his password in his personal Profile.
 - Each User can see in their Profile all Polls in which the User has already voted, as well as - Polls to which the User has not yet voted.
-- A user may change their vote (re-vote), but not before 30 days after their vote.
+- User may change their vote (re-vote), but not before 30 days after their vote.
 - Also implements login through social networks such as GitHub, Google and Instagram.
 - Only registered users who have confirmed their email and users logged in through social networks can vote.
 - Each user can only vote once per poll.

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import transaction, IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -98,14 +99,30 @@ class AboutView(generic.TemplateView):
 #     messages.success(request, "Thanks for your vote!")
 #     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
 
+# @can_change_vote
+# def vote(request, slug):
+#     question = get_object_or_404(Question, slug=slug)
+#     selected_choice = question.choice_set.get(pk=request.POST['choice'])
+#     existing_vote = Vote.objects.filter(voter=request.user, question=question)
+#     if existing_vote.exists():
+#         existing_vote.delete()
+#         messages.info(request, "Your previous vote has been updated!")
+#     Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
+#     messages.success(request, "Thanks for your vote!")
+#     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
+
 @can_change_vote
 def vote(request, slug):
     question = get_object_or_404(Question, slug=slug)
-    selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    existing_vote = Vote.objects.filter(voter=request.user, question=question)
-    if existing_vote.exists():
-        existing_vote.delete()
-        messages.info(request, "Your previous vote has been updated!")
-    Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
-    messages.success(request, "Thanks for your vote!")
+    try:
+        with transaction.atomic():
+            selected_choice = question.choice_set.get(pk=request.POST['choice'])
+            existing_vote = Vote.objects.filter(voter=request.user, question=question)
+            if existing_vote.exists():
+                existing_vote.delete()
+                messages.info(request, "Your previous vote has been updated!")
+            Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
+            messages.success(request, "Thanks for your vote!")
+    except IntegrityError:
+        messages.error(request, "There was an error processing your vote.")
     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))

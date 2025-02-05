@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   webapp:
-    container_name: django-app
+    container_name: vote-django-app
     restart: always
     build: ./
     volumes:

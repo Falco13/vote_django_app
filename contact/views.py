@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from contact.forms import ContactForm, ContactUserForm
 from django.contrib import messages
+from django.db import transaction
 from contact.models import Contact
 
 
@@ -9,10 +10,11 @@ def contact_view(request):
         if request.user.is_authenticated:
             form = ContactUserForm(request.POST)
             if form.is_valid():
-                Contact.objects.create(name_user=request.user,
-                                       first_name=request.user.first_name,
-                                       email=request.user.email,
-                                       text=form.cleaned_data.get('text'))
+                with transaction.atomic():
+                    Contact.objects.create(name_user=request.user,
+                                        first_name=request.user.first_name,
+                                        email=request.user.email,
+                                        text=form.cleaned_data.get('text'))
             else:
                 messages.error(request, form.errors)
                 return redirect('poll_app:home')
@@ -20,7 +22,8 @@ def contact_view(request):
             form = ContactForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
-                Contact.objects.create(**data)
+                with transaction.atomic():
+                    Contact.objects.create(**data)
             else:
                 messages.error(request, form.errors)
                 return redirect('poll_app:home')

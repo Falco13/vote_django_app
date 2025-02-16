@@ -92,25 +92,6 @@ class AboutView(generic.TemplateView):
     template_name = 'poll_app/about.html'
 
 
-# def vote(request, slug):
-#     question = get_object_or_404(Question, slug=slug)
-#     selected_choice = question.choice_set.get(pk=request.POST['choice'])
-#     Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
-#     messages.success(request, "Thanks for your vote!")
-#     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
-
-# @can_change_vote
-# def vote(request, slug):
-#     question = get_object_or_404(Question, slug=slug)
-#     selected_choice = question.choice_set.get(pk=request.POST['choice'])
-#     existing_vote = Vote.objects.filter(voter=request.user, question=question)
-#     if existing_vote.exists():
-#         existing_vote.delete()
-#         messages.info(request, "Your previous vote has been updated!")
-#     Vote.objects.create(voter=request.user, choice=selected_choice, question=question)
-#     messages.success(request, "Thanks for your vote!")
-#     return HttpResponseRedirect(reverse('poll_app:results', args=(slug,)))
-
 @can_change_vote
 def vote(request, slug):
     question = get_object_or_404(Question, slug=slug)
